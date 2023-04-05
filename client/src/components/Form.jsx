@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Form = ({labelName,type,name,placeholder,value,handleChange,isSurpriseMe,handleSurpriseMe,}) => (
+const Form = ({labelName,type,name,placeholder,value,handleChange,isSurpriseMe,handleSurpriseMe}) => (
   <div>
     <div className="flex items-center gap-2 mb-2">
 
@@ -29,6 +29,7 @@ const Form = ({labelName,type,name,placeholder,value,handleChange,isSurpriseMe,h
       onChange={handleChange}
       required
     />
+    
   </div>
 );
 

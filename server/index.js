@@ -11,8 +11,8 @@ const app = express()
 app.use(cors())
 app.use(express.json({ limit : '45mb'}))
 
-app.use('api/post', postRoutes)
-app.use('api/img', imgRoutes)
+app.use('/api/post', postRoutes)
+app.use('/api/img', imgRoutes)
 
 
 app.get('/', async (req,res) => {

@@ -17,11 +17,56 @@ const CreatePost = () => {
   const [makingImg, setMakingImg] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const generateImage = () =>{
-    
+  const generateImage = async () =>{
+    if (form.prompt) {
+      try {
+        setMakingImg(true);
+        const response = await fetch('http://localhost:8080/api/img',{
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            prompt: form.prompt,
+          }),
+        });
+
+        const data = await response.json();
+        setForm({ ...form, image: `data:image/jpeg;base64,${data.image}`});
+        // console.log(form.image);
+
+      } catch (err) {
+        alert(err);
+      } finally {
+        setMakingImg(false);
+      }
+    } else {
+      alert('Please provide proper prompt');
+    }
   }
-  const handleSubmit = () =>{
-    
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+
+    if(form.prompt && form.image){
+      setLoading(true);
+      try {
+        const response = await fetch('http://localhost:8080/api/post',{
+          method: 'POST',
+          headers: {
+            'Content-Type' : 'application/json',
+          },
+          body: JSON.stringify(form)
+        })
+        await response.json();
+        navigate('/')
+      } catch (error) {
+        alert(error)
+      }finally{
+        setLoading(false)
+      }
+    }else{
+      alert("Plese enter a prompt to generate an image")
+    }
   }
   const handleChange = (e) =>{
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -61,7 +106,7 @@ const CreatePost = () => {
           />
 
           <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
-            {Form.image ? (
+            {form.image ? (
               <img src = {form.image} alt={form.prompt} className='w-full h-full object-contain'/>
             ) : (
               <img src = {preview} alt='preview' className='w-9/12 h-9/12 object-contain opacity-40'/>

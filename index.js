@@ -22,7 +22,7 @@ app.get('/', async (req,res) => {
 const runserver = async () => {
     try {
         connectDB(process.env.MONGO_URL)
-        app.listen(8080, () => console.log("Server started on port http://localhost:8080"))
+        app.listen(process.env.PORT || 8080, () => console.log("Server started"))
     } catch (error) {
         console.log(error);   
     }
